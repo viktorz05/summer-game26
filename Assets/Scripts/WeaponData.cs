@@ -14,4 +14,5 @@ public class WeaponData : ScriptableObject
     [Header("Fire attributes")]
     public uint damage;
     public uint fireRate;
+    public float shootingInterval;
 }

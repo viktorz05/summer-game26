@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     float xRotation = 0f;
     float yVelocity = 0f;
 
+    public bool isInteracting = false;
+
     void Start()
     {
         if (playerController == null)
