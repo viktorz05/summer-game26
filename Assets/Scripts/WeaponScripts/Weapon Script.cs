@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,8 +12,8 @@ public class WeaponScript : MonoBehaviour
 
     private uint currentAmmo = 0u;
     private float nextShotTime = 0f;
-    private bool isReloading = false;
-    private bool isAiming = false;
+    private bool isReloading;
+    private bool isAiming;
 
     void Start()
     {
@@ -27,14 +28,15 @@ public class WeaponScript : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Shoot();
+            tryShoot();
         }
     }
 
     void tryShoot()
     {
-        if (currentAmmo > 0 && !isReloading && !playerMovement.isInteracting)
+        if (currentAmmo <= 0 || isReloading || playerMovement.isInteracting)
         {
+            Debug.Log("Can't shoot rn");
             return;
         }
         
@@ -45,6 +47,7 @@ public class WeaponScript : MonoBehaviour
         }
 
     }
+
     void Shoot()
     {
         currentAmmo--;
@@ -64,7 +67,7 @@ public class WeaponScript : MonoBehaviour
             }
             else if (objectHit.CompareTag("Target") || objectHit.name == "Target")
             {
-    
+
                 // No Target component — try manager singleton, else fallback to deactivate only.
                 GameObject targetGo = objectHit.gameObject;
                 if (ShootingRange.Instance != null)
