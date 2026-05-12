@@ -9,6 +9,9 @@ public class WeaponScript : MonoBehaviour
     public Camera playerCamera;
     public PlayerMovement playerMovement;
     public WeaponData weaponData;
+    private ShootModule _shootModule;
+    private AmmoModule _ammoModule;
+    private ReloadModule _reloadModule;
 
     private uint currentAmmo = 0u;
     private float nextShotTime = 0f;
@@ -42,48 +45,14 @@ public class WeaponScript : MonoBehaviour
         
         if (Time.time >= nextShotTime)
         {
-            nextShotTime = Time.time + (1 / weaponData.shootingInterval);
-            Shoot();
+            nextShotTime = Time.time + (1 / weaponData.fireRate);
+            Ray playerRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+            _shootModule.Shoot(playerRay);
         }
 
     }
 
-    void Shoot()
-    {
-        currentAmmo--;
-        RaycastHit hit;
-        Ray shootRay = playerCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(shootRay, out hit))
-        {
-            Transform objectHit = hit.transform;
-            Debug.Log("Hit object: " + objectHit.name);
-
-            // Try to call the Target component first (preferred)
-            var targetComp = objectHit.GetComponent<Target>();
-            if (targetComp != null)
-            {
-                targetComp.OnHit();
-            }
-            else if (objectHit.CompareTag("Target") || objectHit.name == "Target")
-            {
-
-                // No Target component — try manager singleton, else fallback to deactivate only.
-                GameObject targetGo = objectHit.gameObject;
-                if (ShootingRange.Instance != null)
-                {
-                    ShootingRange.Instance.HandleTargetHit(targetGo);
-                }
-                else
-                {
-                    Debug.LogWarning("No ShootingRange available and no Target component. Deactivating target without respawn.");
-                    targetGo.SetActive(false);
-                }
-            }
-        }
-
-        Debug.Log("Weapon fired!");
-    }
+    
 
     private void tryReload()
     {

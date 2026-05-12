@@ -1,18 +1,28 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponData", menuName = "Scriptable Objects/WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    [Header("Weapon info attributes")]
+    [Header("Weapon info")]
     public string weaponName;
-    public uint ID;
+    public bool isAutomatic;
 
-    [Header("Reload attributes")]
+    [Header("Ammo")]
     public uint magazineSize;
+    public uint reserveSize;
+
+    [Header("Reload")]
     public float reloadSpeed;
 
-    [Header("Fire attributes")]
+    [Header("Fire")]
     public uint damage;
-    public uint fireRate;
-    public float shootingInterval;
+    public float fireRate;
+    public float range;
+    public float bulletSpread;
+    public float recoil;
+    public LayerMask hitLayer;
+
+    [Header("ADS")]
+    public float adsSpeed;
 }
