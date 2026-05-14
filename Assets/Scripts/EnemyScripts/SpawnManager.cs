@@ -1,37 +1,45 @@
+using System.Collections;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public GameObject Zombie;
-    private float spawnRadius = 9f;
-
-    void Start()
-    {
-        SpawnWave();
-    }
+    [SerializeField] public GameObject zombiePrefab;
+    [SerializeField] private float spawnRadius = 9f;
+    [SerializeField] private int enemiesPerWave = 3;
+    [SerializeField] private float timeBetweenSpawn = 0.5f;
+    private int wave = 0;
+    void Start() => StartCoroutine(waveLoop());
 
     // Update is called once per frame
-    void Update()
+    private IEnumerator waveLoop()
     {
-
-    }
-
-    private void SpawnWave()
-    {
-        for (int i = 0; i < 10; i++)
+        while (true)
         {
-            Instantiate(Zombie, GenerateRandomPos(), Zombie.transform.rotation);
+            wave++;
+            yield return StartCoroutine(SpawnWave(enemiesPerWave + wave * 2));
+            yield return new WaitForSeconds(timeBetweenSpawn);
+
+        }
+    }
+    private IEnumerator SpawnWave(int enemyCount)
+    {
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Instantiate(zombiePrefab, GenerateRandomPos(), zombiePrefab.transform.rotation);
+            yield return new WaitForSeconds(timeBetweenSpawn);
         }
     }
 
     private Vector3 GenerateRandomPos()
     {
-        float posX = Random.Range(-spawnRadius, spawnRadius);
-        float posZ = Random.Range(-spawnRadius, spawnRadius);
+        float angle = Random.Range(0f, Mathf.PI * 2f);
+        float radius = spawnRadius;
 
-        Vector3 spawnPos = new Vector3(posX, 1f, posZ);
-
-        return spawnPos;
+        return new Vector3(
+            Mathf.Cos(angle) * radius,
+            1f,
+            Mathf.Sin(angle) * radius
+        );
     }
 }

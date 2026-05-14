@@ -13,7 +13,7 @@ public class WeaponScript : MonoBehaviour
     private AmmoModule _ammoModule;
     private ReloadModule _reloadModule;
 
-    private uint currentAmmo = 0u;
+    private uint currentAmmo = 100u;
     private float nextShotTime = 0f;
     private bool isReloading;
     private bool isAiming;
@@ -46,8 +46,7 @@ public class WeaponScript : MonoBehaviour
         if (Time.time >= nextShotTime)
         {
             nextShotTime = Time.time + (1 / weaponData.fireRate);
-            Ray playerRay = playerCamera.ScreenPointToRay(Input.mousePosition);
-            _shootModule.Shoot(playerRay);
+            _shootModule.Shoot();
         }
 
     }

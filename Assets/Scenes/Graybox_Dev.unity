@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 68486455}
   m_Layer: 0
   m_Name: playerCapsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,6 +159,7 @@ MonoBehaviour:
   lockCursor: 1
   gravity: -9.81
   jumpHeight: 1.25
+  isInteracting: 0
 --- !u!143 &68486456
 CharacterController:
   m_ObjectHideFlags: 0
@@ -537,6 +538,7 @@ MonoBehaviour:
   weaponModel: {fileID: 569961147}
   playerCamera: {fileID: 330585545}
   playerMovement: {fileID: 68486455}
+  weaponData: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,7 +1229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e327b46b9206ad41882586082364eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
-  Zombie: {fileID: 1348296815}
+  zombiePrefab: {fileID: 1348296815}
+  spawnRadius: 9
+  enemiesPerWave: 3
+  timeBetweenSpawn: 0.5
 --- !u!1 &1925926594
 GameObject:
   m_ObjectHideFlags: 0
