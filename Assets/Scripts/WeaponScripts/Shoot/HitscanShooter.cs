@@ -8,7 +8,11 @@ public class HitscanShooter : ShootModule
     private WeaponData _data;
     public event Action<RaycastHit> OnHit;
 
-    private void Awake() => playerCam = Camera.main;
+    private void Awake()
+    {
+        canShoot = true;
+        playerCam = Camera.main;
+    } 
     public void Initialize(WeaponData data) => _data = data;
     public override void Shoot()
     {

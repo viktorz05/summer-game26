@@ -19,6 +19,7 @@ public class WeaponData : ScriptableObject
     public uint damage;
     public float fireRate;
     public float range;
+    public uint burstSize;
     public float bulletSpread;
     public float recoil;
     public LayerMask hitLayer;
