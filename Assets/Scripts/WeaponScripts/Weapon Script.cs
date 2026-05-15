@@ -15,7 +15,6 @@ public class WeaponScript : MonoBehaviour
 
     private uint currentAmmo = 100u;
     private float nextShotTime = 0f;
-    private bool isReloading;
     private bool isAiming;
 
     void Start()
@@ -33,16 +32,20 @@ public class WeaponScript : MonoBehaviour
         {
             tryShoot();
         }
+        if (Input.GetKeyDown("Reload"))
+        {
+            tryReload();
+        }
     }
 
     void tryShoot()
     {
-        if (currentAmmo <= 0 || isReloading || playerMovement.isInteracting)
+        if (currentAmmo <= 0 || _reloadModule.isReloading || playerMovement.isInteracting)
         {
             Debug.Log("Can't shoot rn");
             return;
         }
-        
+
         if (Time.time >= nextShotTime)
         {
             nextShotTime = Time.time + (1 / weaponData.fireRate);
@@ -51,21 +54,11 @@ public class WeaponScript : MonoBehaviour
 
     }
 
-    
-
     private void tryReload()
     {
-        if (!isReloading && currentAmmo < weaponData.magazineSize)
+        if (!_reloadModule.isReloading && currentAmmo < weaponData.magazineSize)
         {
-            StartCoroutine(Reload());
+            _reloadModule.Reload();
         }
-    }
-    
-    private IEnumerator Reload()
-    {
-        isReloading = true;
-        yield return new WaitForSeconds(weaponData.reloadSpeed);
-        currentAmmo = weaponData.magazineSize;
-        isReloading = false;
     }
 }
