@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 // Attach this to the target prefab. WeaponScript will call OnHit() when the raycast hits it.
-public class Target : MonoBehaviour
+public class Target : MonoBehaviour, IDamageAble
 {
     [Tooltip("Delay before the target respawns if ShootingRange manager is unavailable.")]
     public float localRespawnDelay = 1f;
@@ -11,7 +11,11 @@ public class Target : MonoBehaviour
     public bool useShootingRange = true;
 
     // Called when the target is hit
-    public void OnHit()
+    public void TakeDamage(float damage)
+    {
+        OnHit();
+    }
+    private void OnHit()
     {
         // Immediately disappear
         gameObject.SetActive(false);

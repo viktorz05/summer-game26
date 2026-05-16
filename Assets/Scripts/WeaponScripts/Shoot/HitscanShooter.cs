@@ -18,11 +18,12 @@ public class HitscanShooter : ShootModule
     {
         Vector3 spread = GetSpread();
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward + spread);
-
+        Debug.DrawRay(ray.origin, 10f * ray.direction, Color.red);
         if (Physics.Raycast(ray, out var hit, _data.range, _data.hitLayer))
         {
             hit.collider.GetComponent<IDamageAble>()?.TakeDamage(_data.damage);
             OnHit?.Invoke(hit);
+            Debug.DrawLine(ray.origin, hit.point, Color.green);
         }
     }
     private Vector3 GetSpread()

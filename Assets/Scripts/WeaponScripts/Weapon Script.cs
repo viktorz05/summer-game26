@@ -30,6 +30,10 @@ public class WeaponScript : MonoBehaviour
         if (_weaponData == null) Debug.LogError("Weapon data not assigned!");
         if (weaponModel == null) Debug.LogError("Weapon model not assigned in the inspector.");
 
+        foreach (var module in GetComponents<IWeaponModule>())
+        {
+            module.Initialize(_weaponData);
+        }
     }
 
     void Update()
@@ -46,25 +50,24 @@ public class WeaponScript : MonoBehaviour
 
     void tryShoot()
     {
-        if (currentAmmo <= 0 || _reloadModule.isReloading || playerMovement.isInteracting)
+        if (_reloadModule.isReloading) return;
+        if (!_ammoModule.HasAmmo)
         {
-            Debug.Log("Can't shoot rn");
+            tryReload();
             return;
         }
 
-        if (Time.time >= nextShotTime)
-        {
-            nextShotTime = Time.time + (1 / _weaponData.fireRate);
-            _shootModule.Shoot();
-        }
+        if (Time.time < nextShotTime) return;
+        nextShotTime = Time.time + (60f / _weaponData.fireRate);
+        _ammoModule.ConsumeRound();
+        _shootModule.Shoot();
+        Debug.Log("Weapon fired");
 
     }
 
     private void tryReload()
     {
-        if (!_reloadModule.isReloading && currentAmmo < weaponData.magazineSize)
-        {
-            _reloadModule.Reload();
-        }
+        if (_reloadModule.isReloading || _ammoModule.IsClipFull || !_ammoModule.HasReserve) return;
+        _reloadModule.startReload();
     }
 }

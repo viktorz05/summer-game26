@@ -4,18 +4,23 @@ using System.Collections;
 public class ReloadModule : MonoBehaviour
 {
     private WeaponData _data;
-    public bool isReloading;
-    public void Reload()
+    private AmmoModule _ammo;
+    public bool isReloading { get; private set; }
+    public void Initialize(WeaponData data) => _data = data;
+    private void Awake()
     {
-       if(!isReloading)
-       {
-            StartCoroutine(ReloadCoroutine());
-       }
+        _ammo = GetComponent<AmmoModule>();
+    }
+    public void startReload()
+    {
+        if (isReloading || _ammo.IsClipFull || !_ammo.HasReserve) return;
+        StartCoroutine(ReloadCoroutine());
     }   
     private IEnumerator ReloadCoroutine()
     {
         isReloading = true;
         yield return new WaitForSeconds(_data.reloadSpeed);
+        _ammo.Reload();
         isReloading = false;
     }
 }

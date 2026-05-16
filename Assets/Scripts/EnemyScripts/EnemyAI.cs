@@ -3,12 +3,12 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour, IDamageAble
 {
-    public float health = 100f;
+    public float health = 10f;
     public float speed = 1.5f;
     public float attackRange = 1f;
 
     [SerializeField] private Transform player;
-    private NavMeshAgent agent = null;
+    private NavMeshAgent agent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -39,10 +39,10 @@ public class EnemyAI : MonoBehaviour, IDamageAble
         agent.ResetPath();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(uint damage)
     {
         health -= damage;
-        if (health <= 0) Die();
+        if (health <= 0f) Die();
     }
 
     private void Die()
