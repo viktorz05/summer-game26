@@ -11,7 +11,7 @@ public class Target : MonoBehaviour, IDamageAble
     public bool useShootingRange = true;
 
     // Called when the target is hit
-    public void TakeDamage(float damage)
+    public void TakeDamage(uint damage)
     {
         OnHit();
     }

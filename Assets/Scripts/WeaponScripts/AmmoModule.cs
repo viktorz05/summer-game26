@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AmmoModule
+public class AmmoModule : MonoBehaviour, IWeaponModule
 {
     public event Action OnAmmoChanged;
     public event Action OnEmptyClip;

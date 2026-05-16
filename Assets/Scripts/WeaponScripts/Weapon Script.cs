@@ -34,35 +34,60 @@ public class WeaponScript : MonoBehaviour
         {
             module.Initialize(_weaponData);
         }
+
+        Debug.Log("WeaponScript initialized successfully");
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (_weaponData.isAutomatic)
         {
-            tryShoot();
+            // Automatic: fire while holding Fire1
+            if (Input.GetButton("Fire1"))
+            {
+                tryShoot();
+            }
         }
-        if (Input.GetKeyDown("Reload"))
+        else
         {
-            tryReload();
+            // Semi-automatic: fire on Fire1 press
+            if (Input.GetButtonDown("Fire1"))
+            {
+                tryShoot();
+            }
         }
+
+        //if (Input.GetKeyDown("R"))
+        //{
+        //    tryReload();
+        //}
     }
 
     void tryShoot()
     {
-        if (_reloadModule.isReloading) return;
+        if (_reloadModule.isReloading)
+        {
+            Debug.Log("Cannot shoot: weapon is reloading");
+            return;
+        }
+
         if (!_ammoModule.HasAmmo)
         {
+            Debug.Log("No ammo in magazine, attempting reload");
             tryReload();
             return;
         }
 
-        if (Time.time < nextShotTime) return;
+        if (Time.time < nextShotTime)
+        {
+            Debug.Log($"Too fast: next shot available at {nextShotTime}, current time {Time.time}");
+            return;
+        }
+
         nextShotTime = Time.time + (60f / _weaponData.fireRate);
         _ammoModule.ConsumeRound();
         _shootModule.Shoot();
         Debug.Log("Weapon fired");
-
     }
 
     private void tryReload()

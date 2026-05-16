@@ -21,7 +21,7 @@ MonoBehaviour:
   fireRate: 150
   range: 1000
   burstSize: 0
-  bulletSpread: 5
+  bulletSpread: 0
   recoil: 0
   hitLayer:
     serializedVersion: 2

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ReloadModule : MonoBehaviour
+public class ReloadModule : MonoBehaviour, IWeaponModule
 {
     private WeaponData _data;
     private AmmoModule _ammo;

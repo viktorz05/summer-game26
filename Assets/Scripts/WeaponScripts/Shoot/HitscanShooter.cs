@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class HitscanShooter : ShootModule
+public class HitscanShooter : ShootModule, IWeaponModule
 {
     private Camera playerCam;
     private WeaponData _data;
@@ -16,23 +16,32 @@ public class HitscanShooter : ShootModule
     public void Initialize(WeaponData data) => _data = data;
     public override void Shoot()
     {
-        Vector3 spread = GetSpread();
-        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward + spread);
-        Debug.DrawRay(ray.origin, 10f * ray.direction, Color.red);
+        Vector3 direction = GetSpreadDirection();
+        Ray ray = new Ray(playerCam.transform.position, direction);
+        Debug.DrawRay(ray.origin, 10f * ray.direction, Color.red, 2f);
         if (Physics.Raycast(ray, out var hit, _data.range, _data.hitLayer))
         {
             hit.collider.GetComponent<IDamageAble>()?.TakeDamage(_data.damage);
             OnHit?.Invoke(hit);
-            Debug.DrawLine(ray.origin, hit.point, Color.green);
+            Debug.DrawLine(ray.origin, 10f * hit.point, Color.green, 2f);
         }
     }
-    private Vector3 GetSpread()
+    private Vector3 GetSpreadDirection()
     {
+        Vector3 baseDirection = playerCam.transform.forward;
+
+        if (_data.bulletSpread <= 0f)
+            return baseDirection;
+
         float spread = _data.bulletSpread * Mathf.Deg2Rad;
-        return new Vector3(
+        Vector3 randomSpread = new Vector3(
             Random.Range(-spread, spread),
             Random.Range(-spread, spread),
             0f
         );
+
+        // Apply spread by rotating the base direction
+        Quaternion spreadRotation = Quaternion.Euler(randomSpread.x * Mathf.Rad2Deg, randomSpread.y * Mathf.Rad2Deg, 0f);
+        return (spreadRotation * baseDirection).normalized;
     }
 }
