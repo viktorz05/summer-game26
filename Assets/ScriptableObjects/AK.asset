@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b785c227c1f1ef40b3897c07a863057, type: 3}
   m_Name: AK
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponName: Cuerno de chivo
+  weaponName: AK-47
   isAutomatic: 1
   magazineSize: 30
-  reserveSize: 1000
-  reloadSpeed: 5
+  reserveSize: 240
+  reloadSpeed: 3.15
   damage: 10
-  fireRate: 150
+  fireRate: 600
   range: 1000
   burstSize: 0
   bulletSpread: 0

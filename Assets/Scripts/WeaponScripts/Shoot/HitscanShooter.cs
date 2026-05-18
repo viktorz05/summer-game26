@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 
 public class HitscanShooter : ShootModule, IWeaponModule
@@ -7,6 +8,7 @@ public class HitscanShooter : ShootModule, IWeaponModule
     private Camera playerCam;
     private WeaponData _data;
     public event Action<RaycastHit> OnHit;
+    [SerializeField] private VisualEffect muzzleFlashVFX;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class HitscanShooter : ShootModule, IWeaponModule
         Vector3 direction = GetSpreadDirection();
         Ray ray = new Ray(playerCam.transform.position, direction);
         Debug.DrawRay(ray.origin, 10f * ray.direction, Color.red, 2f);
+        muzzleFlashVFX.Play();
         if (Physics.Raycast(ray, out var hit, _data.range, _data.hitLayer))
         {
             hit.collider.GetComponent<IDamageAble>()?.TakeDamage(_data.damage);
