@@ -18,7 +18,7 @@ MonoBehaviour:
   reserveSize: 1000
   reloadSpeed: 5
   damage: 10
-  fireRate: 150
+  fireRate: 600
   range: 1000
   burstSize: 0
   bulletSpread: 0
