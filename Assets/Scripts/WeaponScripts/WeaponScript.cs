@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 using UnityEngine.UIElements;
 
 public class WeaponScript : MonoBehaviour
@@ -8,6 +9,10 @@ public class WeaponScript : MonoBehaviour
     [SerializeField] private GameObject weaponModel;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private WeaponData _weaponData;
+    [SerializeField] private Light muzzleLight;
+    [SerializeField] private float flashDuration = 0.04f;
+
+    private float flashTimer;
 
     private PlayerMovement playerMovement;
     private ShootModule _shootModule;
@@ -87,6 +92,7 @@ public class WeaponScript : MonoBehaviour
         nextShotTime = Time.time + (60f / _weaponData.fireRate);
         _ammoModule.ConsumeRound();
         _shootModule.Shoot();
+        muzzleFlash();
         Debug.Log("Weapon fired");
     }
 
@@ -94,5 +100,19 @@ public class WeaponScript : MonoBehaviour
     {
         if (_reloadModule.isReloading || _ammoModule.IsClipFull || !_ammoModule.HasReserve) return;
         _reloadModule.startReload();
+    }
+
+    private void muzzleFlash()
+    {
+        muzzleLight.intensity = UnityEngine.Random.Range(2f, 5f);
+        muzzleLight.enabled = true;
+
+        CancelInvoke(nameof(DisableMuzzleFlash));
+        Invoke(nameof(DisableMuzzleFlash), 0.04f);
+    }
+
+    private void DisableMuzzleFlash()
+    {
+        muzzleLight.enabled = false;
     }
 }

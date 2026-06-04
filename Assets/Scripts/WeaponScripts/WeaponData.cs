@@ -14,7 +14,7 @@ public class WeaponData : ScriptableObject
 
     [Header("Reload")]
     public float reloadSpeed;
-
+ 
     [Header("Fire")]
     public uint damage;
     public float fireRate;
