@@ -20,6 +20,7 @@ public class AmmoModule : MonoBehaviour, IWeaponModule
         _data = data;
         _currentAmmo = data.magazineSize;
         _reserveAmmo = data.reserveSize;
+        UIManager.Instance.setAmmo((int)_currentAmmo);
     }
 
     public void ConsumeRound()
@@ -27,6 +28,7 @@ public class AmmoModule : MonoBehaviour, IWeaponModule
         if (_currentAmmo > 0)
         {
             _currentAmmo--;
+            UIManager.Instance.setAmmo((int)_currentAmmo);
             OnAmmoChanged?.Invoke();
         }
         OnEmptyClip?.Invoke();
