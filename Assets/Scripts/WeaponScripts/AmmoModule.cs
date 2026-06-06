@@ -20,7 +20,7 @@ public class AmmoModule : MonoBehaviour, IWeaponModule
         _data = data;
         _currentAmmo = data.magazineSize;
         _reserveAmmo = data.reserveSize;
-        UIManager.Instance.setAmmo((int)_currentAmmo);
+        UIManager.Instance?.setAmmo((int)_currentAmmo, (int)_data.magazineSize);
     }
 
     public void ConsumeRound()
@@ -28,7 +28,7 @@ public class AmmoModule : MonoBehaviour, IWeaponModule
         if (_currentAmmo > 0)
         {
             _currentAmmo--;
-            UIManager.Instance.setAmmo((int)_currentAmmo);
+            UIManager.Instance?.setAmmo((int)_currentAmmo, (int)_data.magazineSize);
             OnAmmoChanged?.Invoke();
         }
         OnEmptyClip?.Invoke();
@@ -41,6 +41,7 @@ public class AmmoModule : MonoBehaviour, IWeaponModule
         _currentAmmo += toLoad;
         _reserveAmmo -= toLoad;
 
+        UIManager.Instance?.setAmmo((int)_currentAmmo, (int)_data.magazineSize);
         OnAmmoChanged?.Invoke();
     }
 }

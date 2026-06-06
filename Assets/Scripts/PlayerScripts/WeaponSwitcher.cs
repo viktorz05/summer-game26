@@ -14,7 +14,11 @@ public class WeaponSwitcher : MonoBehaviour
         scrollAction =
              inputActions
              .FindActionMap("Player")
-             .FindAction("ScrollWheel");
+             .FindAction("ScrollWeapons");
+        if (scrollAction == null)
+        {
+            Debug.Log($"Input action {scrollAction} not set in the editor!");
+        }
     }
 
     private void OnEnable()
