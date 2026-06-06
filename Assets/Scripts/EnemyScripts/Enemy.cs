@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour, IDamageAble
+public class Enemy : MonoBehaviour, IDamageAble
 {
     public float health = 10f;
     public float speed = 1.5f;

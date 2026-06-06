@@ -1,14 +1,23 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class SpawnManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] public GameObject zombiePrefab;
+    [SerializeField] private Enemy zombiePrefab;
     [SerializeField] private float spawnRadius = 9f;
     [SerializeField] private int enemiesPerWave = 3;
     [SerializeField] private float timeBetweenSpawn = 0.5f;
+    private float timeSinceLastSpawn;
+
+    private IObjectPool<Enemy> zombiePool;
     private int wave = 0;
+
+    private void Awake()
+    {
+        zombiePool = new ObjectPool<Enemy>(CreateEnemy);
+    }
     void Start() => StartCoroutine(waveLoop());
 
     // Update is called once per frame
@@ -41,5 +50,12 @@ public class SpawnManager : MonoBehaviour
             1f,
             Mathf.Sin(angle) * radius
         );
+    }
+
+    private Enemy CreateEnemy()
+    {
+        Enemy enemy = Instantiate(zombiePrefab);
+        return enemy;
+
     }
 }
