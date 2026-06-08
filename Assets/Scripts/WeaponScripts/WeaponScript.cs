@@ -62,10 +62,10 @@ public class WeaponScript : MonoBehaviour
             }
         }
 
-        //if (Input.GetKeyDown("R"))
-        //{
-        //    tryReload();
-        //}
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            tryReload();
+        }
     }
 
     void tryShoot()

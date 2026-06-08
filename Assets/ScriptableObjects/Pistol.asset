@@ -16,7 +16,7 @@ MonoBehaviour:
   isAutomatic: 0
   magazineSize: 10
   reserveSize: 100
-  reloadSpeed: 2
+  reloadSpeed: 3.15
   damage: 10
   fireRate: 1200
   range: 100
