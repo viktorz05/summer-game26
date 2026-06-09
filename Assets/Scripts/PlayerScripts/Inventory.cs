@@ -4,8 +4,13 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
+    [Header("Weapons")]
     [SerializeField] private GameObject[] weapons;
-    public int currentIndex = 0;
+    public int currentWeaponIndex { get; private set; } = 0;
+
+    [Header("Equipment")]
+    [SerializeField] private GameObject[] equipment;
+    public int currentEquipmentIndex { get; private set; } = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,14 +19,19 @@ public class Inventory : MonoBehaviour
             weapons[i].SetActive(i == 0);
         }
     }
+
+    public GameObject getEquipment() => 
+        equipment[currentEquipmentIndex] != null && equipment.Length > 0
+        ? equipment[currentEquipmentIndex] : null;
+
     void addWeapon(GameObject weapon)
     {
-        currentIndex = currentIndex++ % weapons.Length;
-        if (weapons[currentIndex] != null)
+        currentWeaponIndex = currentWeaponIndex++ % weapons.Length;
+        if (weapons[currentWeaponIndex] != null)
         {
-            removeWeapon(currentIndex);
+            removeWeapon(currentWeaponIndex);
         }
-        weapons[currentIndex] = weapon;
+        weapons[currentWeaponIndex] = weapon;
     }
 
     void removeWeapon(int index)
@@ -34,12 +44,12 @@ public class Inventory : MonoBehaviour
         if (index < 0 || index >= weapons.Length) return;
         if (weapons[index] == null) return;
 
-        weapons[currentIndex].SetActive(false);
-        currentIndex = index;
-        weapons[currentIndex].SetActive(true);
+        weapons[currentWeaponIndex].SetActive(false);
+        currentWeaponIndex = index;
+        weapons[currentWeaponIndex].SetActive(true);
     }
 
-    public void equipNext() => equipWeapon((currentIndex + 1) % weapons.Length);
-    public void equipPrevious() => equipWeapon((currentIndex - 1 + weapons.Length) % weapons.Length);
+    public void equipNext() => equipWeapon((currentWeaponIndex + 1) % weapons.Length);
+    public void equipPrevious() => equipWeapon((currentWeaponIndex - 1 + weapons.Length) % weapons.Length);
 
 }

@@ -1,30 +1,49 @@
 using System.Collections;
 using UnityEngine;
 
-public class Grenade : MonoBehaviour, IDetoneable, IThrowable
+public class Grenade : MonoBehaviour, IDetoneable
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Rigidbody rb;
-    public float launchAngle;
-    [SerializeField] public float launchVelocity;
-    [SerializeField] public float damage;
+    [SerializeField] private GameObject explosionEffectPrefab;
+    [SerializeField] public float blastRadius;
+    [SerializeField] public float fuseDelay;
+    [SerializeField] public float blastForce;
 
     void Start()
     {
-       rb = GetComponent<Rigidbody>(); 
+        rb = GetComponent<Rigidbody>();
+        StartCoroutine(FuseCoroutine());
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private IEnumerator FuseCoroutine()
     {
+        yield return new WaitForSeconds(fuseDelay);
+        Detonate();
+    }
+    public void Detonate()
+    {
+        if (explosionEffectPrefab != null)
+        {
+            GameObject explosionEffect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(explosionEffect, 4f);
+            ApplyForces();
+        }
+        Destroy(gameObject);
     }
 
-    public IEnumerator Detonate()
+    void ApplyForces()
     {
-        yield return null;
-    }
-    public void Throw()
-    {
-
+        Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius);
+        foreach (Collider nearbyObj in colliders)
+        {
+            Rigidbody nearbyRb = nearbyObj.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                nearbyRb.GetComponent<IDamageAble>()?.TakeDamage((uint)blastForce);
+                nearbyRb.AddExplosionForce(blastForce, transform.position, blastRadius);
+            }
+        }
     }
 }
+
