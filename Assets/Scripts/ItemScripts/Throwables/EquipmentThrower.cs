@@ -36,27 +36,45 @@ public class EquipmentThrower : MonoBehaviour, IThrowable
     // Update is called once per frame
     void Update()
     {
-        if (readyToThrow && Input.GetKeyDown(throwKey))
+        if (Input.GetKeyDown(throwKey))
         {
-            Throw(); 
+            Debug.Log($"G key pressed. Ready to throw: {readyToThrow}");
+            if (readyToThrow)
+            {
+                Debug.Log("Throwing");
+                Throw(); 
+            }
         }
     }
 
     public void Throw()
     {
         readyToThrow = false;
+        Debug.Log("Throw() called - readyToThrow set to false");
+
         GameObject projectilePrefab = inventory.getEquipment();
         if (projectilePrefab == null)
         {
             Debug.Log("Player has no equipment!");
+            readyToThrow = true;
             return;
         }
+
+        Debug.Log($"Instantiating equipment: {projectilePrefab.name}");
         Vector3 spawnPosition = throwPosition.position + playerCam.transform.forward;
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, playerCam.transform.rotation);
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
 
+        if (rb == null)
+        {
+            Debug.LogError("Projectile has no Rigidbody!");
+            readyToThrow = true;
+            return;
+        }
+
         Vector3 finalThrowDirection = (playerCam.transform.forward + throwDirection).normalized;
-        rb.AddForce(finalThrowDirection *  throwForce, ForceMode.Impulse);
+        rb.AddForce(finalThrowDirection * throwForce, ForceMode.Impulse);
+        Debug.Log($"Grenade thrown with force: {throwForce}");
         readyToThrow = true;
     }
 }

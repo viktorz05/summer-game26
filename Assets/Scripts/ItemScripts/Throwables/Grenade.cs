@@ -23,13 +23,16 @@ public class Grenade : MonoBehaviour, IDetoneable
     }
     public void Detonate()
     {
+        Debug.Log("Detonate called");
         if (explosionEffectPrefab != null)
         {
             GameObject explosionEffect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
             Destroy(explosionEffect, 4f);
+            Debug.Log("Effect spawned");
             ApplyForces();
         }
-        Destroy(gameObject);
+        Debug.Log("Grenade Destroyed");
+        Destroy(gameObject, 1f);
     }
 
     void ApplyForces()
@@ -38,7 +41,7 @@ public class Grenade : MonoBehaviour, IDetoneable
         foreach (Collider nearbyObj in colliders)
         {
             Rigidbody nearbyRb = nearbyObj.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (nearbyRb != null)
             {
                 nearbyRb.GetComponent<IDamageAble>()?.TakeDamage((uint)blastForce);
                 nearbyRb.AddExplosionForce(blastForce, transform.position, blastRadius);
