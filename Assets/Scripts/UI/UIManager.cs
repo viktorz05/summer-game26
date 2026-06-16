@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider ammoBar;
     [SerializeField] private TextMeshProUGUI ammoText;
 
+    [Header("Interaction")]
+    [SerializeField] private TextMeshProUGUI interactionText;
+
 
     public static UIManager Instance { get; private set; }
 
@@ -41,5 +44,15 @@ public class UIManager : MonoBehaviour
     public void setHealth(int health)
     {
         healthBar.value = health;
+    }
+    public void showInteraction(string text)
+    {
+        interactionText.text = text;
+        interactionText.gameObject.SetActive(true);
+    }
+
+    public void hideInteraction()
+    {
+        interactionText.gameObject.SetActive(false);
     }
 }
