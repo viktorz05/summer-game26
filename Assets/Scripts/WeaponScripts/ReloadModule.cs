@@ -19,8 +19,10 @@ public class ReloadModule : MonoBehaviour, IWeaponModule
     private IEnumerator ReloadCoroutine()
     {
         isReloading = true;
+        UIManager.Instance?.showReload("Reloading...");
         yield return new WaitForSeconds(_data.reloadSpeed);
         _ammo.Reload();
         isReloading = false;
+        UIManager.Instance?.hideReload();
     }
 }

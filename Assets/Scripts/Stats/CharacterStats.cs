@@ -1,33 +1,27 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-
+// Credit:https://onewheelstudio.com/blog/2022/11/8/how-i-do-stats
 [CreateAssetMenu(fileName = "CharacterStats", menuName = "Scriptable Objects/CharacterStats")]
 public class CharacterStats : ScriptableObject
 {
-    public Dictionary<Stat, float> Stats = new Dictionary<Stat, float>(); 
-
-    public void SetStat(Stat stat, float amount)
+    [Serializable]
+    private struct StatEntry
     {
-        if (Stats.TryGetValue(stat, out var value))
-        {
-            Stats[stat] += amount;
-        }
-        else
-        {
-            Debug.Log($"No stat {stat} found for character!");
-        }
+        public Stat stat;
+        public float value;
     }
 
-    public void GetStat(Stat stat)
+    [SerializeField] private List<StatEntry> baseStats;
+
+    public Dictionary<Stat, float> GetBaseStats()
     {
-        if (Stats.TryGetValue(stat, out var value))
+        Dictionary<Stat, float> stats = new Dictionary<Stat, float>(); 
+        foreach (var entry in baseStats)
         {
-            Stats[stat] = value;
+            stats.Add(entry.stat, entry.value);
         }
-        else
-        {
-            Debug.Log($"No stat {stat} found for character!");
-        }
+        return stats;
     }
+
 }

@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [Header("Ammo")]
     [SerializeField] private Slider ammoBar;
     [SerializeField] private TextMeshProUGUI ammoText;
+    [SerializeField] private TextMeshProUGUI reloadText; // temporary
 
     [Header("Interaction")]
     [SerializeField] private TextMeshProUGUI interactionText;
@@ -54,5 +55,16 @@ public class UIManager : MonoBehaviour
     public void hideInteraction()
     {
         interactionText.gameObject.SetActive(false);
+    }
+
+    public void showReload(string text)
+    {
+        reloadText.text = text;
+        reloadText.gameObject.SetActive(true);
+    }
+
+    public void hideReload()
+    {
+        reloadText.gameObject.SetActive(false);
     }
 }
