@@ -15,6 +15,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private TextMeshProUGUI reloadText; // temporary
 
+    [Header("Equipment")]
+    [SerializeField] private TextMeshProUGUI equipmentCountText;
+    [SerializeField] private TextMeshProUGUI outOfEquipmentText; // temporary
+
     [Header("Interaction")]
     [SerializeField] private TextMeshProUGUI interactionText;
 
@@ -40,6 +44,10 @@ public class UIManager : MonoBehaviour
     public void setAmmo(int ammo, int max) 
     {
         ammoText.text = $"{ammo} / {max}";
+    }
+    public void setEquipment(int count, int max) 
+    {
+        equipmentCountText.text = $"{count} / {max}";
     }
 
     public void setHealth(int health)
@@ -67,4 +75,15 @@ public class UIManager : MonoBehaviour
     {
         reloadText.gameObject.SetActive(false);
     }
+    public void showOutOfEquipment(string text)
+    {
+        outOfEquipmentText.text = text;
+        outOfEquipmentText.gameObject.SetActive(true);
+    }
+
+    public void hideOutOfEquipment()
+    {
+        outOfEquipmentText.gameObject.SetActive(false);
+    }
+
 }
