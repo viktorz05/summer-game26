@@ -13,7 +13,7 @@ public class Interactor : MonoBehaviour
     private Camera playerCam;
 
     public event Action<RaycastHit> OnHit;
-    private KeyCode interactKey = KeyCode.F;
+    private KeyCode interactKey = KeyCode.E;
     private IInteractable currentInteractable;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,19 +24,33 @@ public class Interactor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckInteraction();
+        UpdateCurrentInteractable();
+        UpdateInteractionText();
+        CheckInteractionInput();
     }
 
-    private void CheckInteraction()
+    private void UpdateCurrentInteractable()
     {
-        if (Input.GetKeyDown(interactKey))
+        Ray r = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        Physics.Raycast(r, out var hit, interactRange);
+        currentInteractable = hit.collider?.GetComponent<IInteractable>();
+    }
+
+    private void UpdateInteractionText()
+    {
+        if (currentInteractable == null)
         {
-            Ray r = new Ray(playerCam.transform.position, playerCam.transform.forward);
-            if (Physics.Raycast(r, out var hit, interactRange))
-            {
-                hit.collider.GetComponent<IInteractable>()?.OnInteract();
-                OnHit?.Invoke(hit);
-            }
+            interactionText.text = string.Empty;
+            return;
+        }
+        interactionText.text = currentInteractable.interactMessage;
+    }
+
+    private void CheckInteractionInput()
+    {
+        if (Input.GetKeyDown(interactKey) && currentInteractable != null) 
+        {
+            currentInteractable.OnInteract();
         }
     }
 }

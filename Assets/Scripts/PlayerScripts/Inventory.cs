@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, IInteractable
 {
     [Header("Weapons")]
     [SerializeField] private GameObject[] weapons;
@@ -11,6 +11,11 @@ public class Inventory : MonoBehaviour
     [Header("Equipment")]
     [SerializeField] private GameObject[] equipment;
     public int currentEquipmentIndex { get; private set; } = 0;
+
+    string IInteractable.interactMessage => weaponMessage;
+
+    [SerializeField]
+    public string weaponMessage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -52,4 +57,12 @@ public class Inventory : MonoBehaviour
     public void equipNext() => equipWeapon((currentWeaponIndex + 1) % weapons.Length);
     public void equipPrevious() => equipWeapon((currentWeaponIndex - 1 + weapons.Length) % weapons.Length);
 
+    public void OnInteract()
+    {
+    }
+
+    bool IInteractable.CanInteract()
+    {
+        throw new System.NotImplementedException();
+    }
 }
