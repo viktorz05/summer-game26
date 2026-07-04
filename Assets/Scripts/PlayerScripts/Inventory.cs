@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Inventory : MonoBehaviour, IInteractable
+public class Inventory : MonoBehaviour
 {
     [Header("Weapons")]
     [SerializeField] private GameObject[] weapons;
@@ -10,15 +10,15 @@ public class Inventory : MonoBehaviour, IInteractable
 
     [Header("Equipment")]
     [SerializeField] private GameObject[] equipment;
+
+    [Header("Camera")]
+    [SerializeField] private Camera playerCamera;
     public int currentEquipmentIndex { get; private set; } = 0;
 
-    string IInteractable.interactMessage => weaponMessage;
-
-    [SerializeField]
-    public string weaponMessage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerCamera = Camera.main;
         for (int i = 0; i < weapons.Length; i++)
         {
             weapons[i].SetActive(i == 0);
@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour, IInteractable
         equipment[currentEquipmentIndex] != null && equipment.Length > 0
         ? equipment[currentEquipmentIndex] : null;
 
-    void addWeapon(GameObject weapon)
+    public void addWeapon(GameObject weapon)
     {
         currentWeaponIndex = currentWeaponIndex++ % weapons.Length;
         if (weapons[currentWeaponIndex] != null)
@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour, IInteractable
             removeWeapon(currentWeaponIndex);
         }
         weapons[currentWeaponIndex] = weapon;
+        equipWeapon(currentWeaponIndex);
     }
 
     void removeWeapon(int index)
@@ -57,12 +58,4 @@ public class Inventory : MonoBehaviour, IInteractable
     public void equipNext() => equipWeapon((currentWeaponIndex + 1) % weapons.Length);
     public void equipPrevious() => equipWeapon((currentWeaponIndex - 1 + weapons.Length) % weapons.Length);
 
-    public void OnInteract()
-    {
-    }
-
-    bool IInteractable.CanInteract()
-    {
-        throw new System.NotImplementedException();
-    }
 }

@@ -7,7 +7,6 @@ using UnityEngine.UIElements;
 public class WeaponScript : MonoBehaviour
 {
     [SerializeField] private GameObject weaponModel;
-    [SerializeField] private Camera playerCamera;
     [SerializeField] private WeaponData _weaponData;
     [SerializeField] private Light muzzleLight;
     [SerializeField] private float flashDuration = 0.04f;
@@ -85,7 +84,7 @@ public class WeaponScript : MonoBehaviour
 
         if (Time.time < nextShotTime)
         {
-            Debug.Log($"Too fast: next shot available at {nextShotTime}, current time {Time.time}");
+            //Debug.Log($"Too fast: next shot available at {nextShotTime}, current time {Time.time}");
             return;
         }
 
