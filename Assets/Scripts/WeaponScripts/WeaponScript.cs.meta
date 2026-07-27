@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 41041cec85c60e94784608f78be9e2ba
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - weaponModel: {fileID: 919132149155446097, guid: c8ac871c958cdc340b83e0c723b337e4, type: 3}
+  - playerCamera: {instanceID: 0}
+  - _weaponData: {fileID: 11400000, guid: f2635e2f8901ec14b8fd4b271241f7bc, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
